@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Yang Liu - Full-Stack Developer Portfolio | 赛博朋克风格个人技术作品集">
+    <meta name="theme-color" content="#0a0a0f">
+    <meta property="og:title" content="Yang Liu | Developer Portfolio">
+    <meta property="og:description" content="Full-Stack Developer // Creative Coder">
+    <title>Yang Liu | Developer Portfolio</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 3D Canvas 背景 -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- 导航栏 -->
+    <nav class="cyber-nav">
+        <div class="nav-logo">Y.L</div>
+        <ul class="nav-links">
+            <li><a href="#hero">首页</a></li>
+            <li><a href="#about">关于</a></li>
+            <li><a href="#projects">项目</a></li>
+            <li><a href="#skills">技能</a></li>
+            <li><a href="#contact">联系</a></li>
+        </ul>
+        <button class="nav-toggle" aria-label="Toggle menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <!-- Hero 首屏 -->
+    <section id="hero" class="section hero-section">
+        <div class="hero-content">
+            <div class="hero-subtitle">Welcome to my digital space</div>
+            <h1 class="glitch-text" data-text="YANG LIU">YANG LIU</h1>
+            <p class="typewriter"></p>
+            <div class="scroll-indicator">
+                <span>SCROLL DOWN</span>
+                <div class="scroll-arrow"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 关于我 -->
+    <section id="about" class="section">
+        <div class="container">
+            <div class="glass-card animate-on-scroll">
+                <h2 class="neon-text section-title">&#x2F;&#x2F; 关于我</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>热爱技术，专注于全栈开发与创意编程。擅长将复杂问题转化为优雅的解决方案。</p>
+                        <p>在代码的世界里探索无限可能，用技术创造有价值的产品。</p>
+                        <div class="about-stats">
+                            <div class="stat-item">
+                                <span class="stat-number" data-count="5">0</span>
+                                <span class="stat-label">年经验</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number" data-count="20">0</span>
+                                <span class="stat-label">个项目</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number" data-count="1000">0</span>
+                                <span class="stat-label">+ Commits</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 项目展示 -->
+    <section id="projects" class="section">
+        <div class="container">
+            <h2 class="neon-text section-title animate-on-scroll">&#x2F;&#x2F; 项目作品</h2>
+            <div class="projects-grid">
+                <div class="project-card animate-on-scroll">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="card-icon">&#x1F680;</div>
+                            <h3>AI 智能助手</h3>
+                            <p class="card-tag">TypeScript / Node.js / LLM</p>
+                        </div>
+                        <div class="card-back">
+                            <p>基于大语言模型的智能对话助手，支持多轮对话、上下文理解和工具调用。</p>
+                            <a href="#" class="cyber-btn">查看详情 &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card animate-on-scroll">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="card-icon">&#x1F310;</div>
+                            <h3>全栈电商平台</h3>
+                            <p class="card-tag">React / Express / MongoDB</p>
+                        </div>
+                        <div class="card-back">
+                            <p>完整的电商解决方案，包含商品管理、购物车、支付系统和订单追踪。</p>
+                            <a href="#" class="cyber-btn">查看详情 &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card animate-on-scroll">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="card-icon">&#x1F4CA;</div>
+                            <h3>数据可视化平台</h3>
+                            <p class="card-tag">D3.js / Python / FastAPI</p>
+                        </div>
+                        <div class="card-back">
+                            <p>交互式数据可视化仪表板，实时数据流处理与多维度图表展示。</p>
+                            <a href="#" class="cyber-btn">查看详情 &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card animate-on-scroll">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="card-icon">&#x1F50C;</div>
+                            <h3>MCP Server 工具集</h3>
+                            <p class="card-tag">TypeScript / MCP Protocol</p>
+                        </div>
+                        <div class="card-back">
+                            <p>基于 MCP 协议的工具服务器集合，扩展 AI 助手能力边界。</p>
+                            <a href="#" class="cyber-btn">查看详情 &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 技能栈 -->
+    <section id="skills" class="section">
+        <div class="container">
+            <h2 class="neon-text section-title animate-on-scroll">&#x2F;&#x2F; 技能栈</h2>
+            <div class="skills-container">
+                <div class="skill-item animate-on-scroll" data-level="95">
+                    <div class="skill-info">
+                        <span class="skill-name">JavaScript / TypeScript</span>
+                        <span class="skill-percent">95%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-fill"></div>
+                    </div>
+                </div>
+                <div class="skill-item animate-on-scroll" data-level="90">
+                    <div class="skill-info">
+                        <span class="skill-name">React / Next.js</span>
+                        <span class="skill-percent">90%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-fill"></div>
+                    </div>
+                </div>
+                <div class="skill-item animate-on-scroll" data-level="85">
+                    <div class="skill-info">
+                        <span class="skill-name">Node.js / Express</span>
+                        <span class="skill-percent">85%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-fill"></div>
+                    </div>
+                </div>
+                <div class="skill-item animate-on-scroll" data-level="80">
+                    <div class="skill-info">
+                        <span class="skill-name">Python / FastAPI</span>
+                        <span class="skill-percent">80%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-fill"></div>
+                    </div>
+                </div>
+                <div class="skill-item animate-on-scroll" data-level="75">
+                    <div class="skill-info">
+                        <span class="skill-name">Docker / DevOps</span>
+                        <span class="skill-percent">75%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-fill"></div>
+                    </div>
+                </div>
+                <div class="skill-item animate-on-scroll" data-level="85">
+                    <div class="skill-info">
+                        <span class="skill-name">Git / CI&#x2F;CD</span>
+                        <span class="skill-percent">85%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-fill"></div>
+                    </div>
+                </div>
+                <div class="skill-item animate-on-scroll" data-level="70">
+                    <div class="skill-info">
+                        <span class="skill-name">Three.js / WebGL</span>
+                        <span class="skill-percent">70%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-fill"></div>
+                    </div>
+                </div>
+                <div class="skill-item animate-on-scroll" data-level="80">
+                    <div class="skill-info">
+                        <span class="skill-name">SQL / NoSQL 数据库</span>
+                        <span class="skill-percent">80%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-fill"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系方式 -->
+    <section id="contact" class="section">
+        <div class="container">
+            <div class="glass-card animate-on-scroll">
+                <h2 class="neon-text section-title">&#x2F;&#x2F; 联系我</h2>
+                <p class="contact-desc">有项目合作或技术交流的想法？随时联系我。</p>
+                <div class="contact-links">
+                    <a href="https://github.com/" class="contact-item" target="_blank" rel="noopener">
+                        <span class="contact-icon">&lt;GH/&gt;</span>
+                        <span>GitHub</span>
+                    </a>
+                    <a href="mailto:hello@example.com" class="contact-item">
+                        <span class="contact-icon">&lt;EM/&gt;</span>
+                        <span>Email</span>
+                    </a>
+                    <a href="https://linkedin.com/" class="contact-item" target="_blank" rel="noopener">
+                        <span class="contact-icon">&lt;LI/&gt;</span>
+                        <span>LinkedIn</span>
+                    </a>
+                    <a href="https://twitter.com/" class="contact-item" target="_blank" rel="noopener">
+                        <span class="contact-icon">&lt;TW/&gt;</span>
+                        <span>Twitter</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="cyber-footer">
+        <p>&copy; 2026 Yang Liu. Built with <span class="neon-text">Three.js</span> &amp; <span class="neon-text">Cyberpunk Vibes</span></p>
+    </footer>
+
+    <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+    <script src="js/scene.js"></script>
+    <script src="js/effects.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
