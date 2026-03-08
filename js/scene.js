@@ -31,8 +31,9 @@ var CyberScene = (function () {
         renderer.toneMappingExposure = 1.2;
 
         // 检测性能
+        var isMobile = window.innerWidth < 768;
         var isLowPerf =
-            window.innerWidth < 768 ||
+            isMobile ||
             (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4);
 
         // 灯光
@@ -51,7 +52,7 @@ var CyberScene = (function () {
         scene.add(pointLight3);
 
         // 生成城市
-        var buildingCount = isLowPerf ? 40 : 100;
+        var buildingCount = isMobile ? 25 : (isLowPerf ? 40 : 100);
         createCity(scene, buildingCount);
 
         // 反射地面
@@ -98,8 +99,11 @@ var CyberScene = (function () {
             });
             var mesh = new THREE.Mesh(geo, mat);
 
-            var x = (Math.random() - 0.5) * gridSize;
-            var z = (Math.random() - 0.5) * gridSize;
+            var x, z;
+            do {
+                x = (Math.random() - 0.5) * gridSize;
+                z = (Math.random() - 0.5) * gridSize;
+            } while (Math.abs(x) < 10 && Math.abs(z) < 10);
             mesh.position.set(x, h / 2, z);
             scene.add(mesh);
 

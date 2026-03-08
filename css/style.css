@@ -55,6 +55,7 @@ body {
     height: 100%;
     z-index: 0;
     pointer-events: none;
+    will-change: transform;
 }
 
 /* ========================================
@@ -249,6 +250,9 @@ body {
 .hero-content {
     position: relative;
     z-index: 2;
+    background: radial-gradient(ellipse at center, rgba(10, 10, 15, 0.7) 0%, transparent 70%);
+    padding: 3rem 4rem;
+    border-radius: 20px;
 }
 
 .hero-subtitle {
@@ -374,7 +378,7 @@ body {
    ======================================== */
 .projects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
 }
 
