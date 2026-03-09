@@ -338,6 +338,89 @@ body {
 /* ========================================
    关于我
    ======================================== */
+.about-content {
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+}
+
+/* 照片区域 */
+.about-photo {
+    flex-shrink: 0;
+    width: 250px;
+}
+
+.photo-frame {
+    position: relative;
+    width: 250px;
+    height: 300px;
+    border: 1px solid var(--glass-border);
+    padding: 8px;
+    background: rgba(10, 10, 20, 0.5);
+}
+
+/* 四角装饰 - L型赛博朋克角标 */
+.frame-corner {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+}
+.frame-corner.top-left { top: -2px; left: -2px; border-top: 2px solid var(--cyber-cyan); border-left: 2px solid var(--cyber-cyan); }
+.frame-corner.top-right { top: -2px; right: -2px; border-top: 2px solid var(--cyber-cyan); border-right: 2px solid var(--cyber-cyan); }
+.frame-corner.bottom-left { bottom: -2px; left: -2px; border-bottom: 2px solid var(--cyber-magenta); border-left: 2px solid var(--cyber-magenta); }
+.frame-corner.bottom-right { bottom: -2px; right: -2px; border-bottom: 2px solid var(--cyber-magenta); border-right: 2px solid var(--cyber-magenta); }
+
+/* 角标发光 */
+.frame-corner.top-left, .frame-corner.top-right {
+    box-shadow: 0 0 6px rgba(0, 255, 245, 0.3);
+}
+.frame-corner.bottom-left, .frame-corner.bottom-right {
+    box-shadow: 0 0 6px rgba(255, 0, 255, 0.3);
+}
+
+/* 图片本身 */
+.avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: saturate(0.8) contrast(1.1);
+    transition: filter 0.3s;
+}
+
+/* 没有图片时显示占位 */
+.avatar-img[src="assets/avatar.jpg"]:not([src$=".jpg"]),
+.photo-frame:has(img[error]) {
+    background: linear-gradient(135deg, rgba(0, 255, 245, 0.05), rgba(255, 0, 255, 0.05));
+}
+
+/* 扫描线动画 */
+.photo-scan-line {
+    position: absolute;
+    top: 0;
+    left: 8px;
+    right: 8px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cyber-cyan), transparent);
+    opacity: 0.6;
+    animation: scan-move 3s ease-in-out infinite;
+}
+
+@keyframes scan-move {
+    0%, 100% { top: 8px; }
+    50% { top: calc(100% - 10px); }
+}
+
+/* hover 效果 */
+.photo-frame:hover .avatar-img {
+    filter: saturate(1) contrast(1.15);
+}
+
+.photo-frame:hover {
+    border-color: var(--cyber-cyan);
+    box-shadow: 0 0 15px rgba(0, 255, 245, 0.15);
+}
+
 .about-text p {
     font-size: 1.05rem;
     margin-bottom: 1rem;
@@ -653,6 +736,15 @@ body {
     .glass-card {
         margin: 0 0.5rem;
         padding: 2rem 1.5rem;
+    }
+
+    .about-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .about-photo {
+        margin: 0 auto;
     }
 
     .about-stats {
