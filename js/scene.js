@@ -296,225 +296,51 @@ var CyberScene = (function () {
     //  5. 两侧城市剪影
     // ================================================================
     function createCitySilhouette(scene) {
-        var columns = [
-            { xBase: 9,  zStep: 8,  hMin: 25, hMax: 50, wMin: 5, wMax: 8,  maxDesktop: 13, maxLow: 8,  maxMobile: 5,  type: 'near' },
-            { xBase: 22, zStep: 10, hMin: 35, hMax: 70, wMin: 6, wMax: 10, maxDesktop: 10, maxLow: 6,  maxMobile: 3,  type: 'mid' },
-            { xBase: 38, zStep: 12, hMin: 20, hMax: 45, wMin: 4, wMax: 7,  maxDesktop: 8,  maxLow: 4,  maxMobile: 0,  type: 'far' },
-        ];
+        var count = isMobile ? 15 : (isLowPerf ? 30 : 60);
 
-        // ---- 辅助：随机窗格颜色（80% cyan, 10% magenta, 10% purple） ----
-        function pickWindowColor() {
-            var r = Math.random();
-            if (r < 0.8) return COLORS.cyan;
-            if (r < 0.9) return COLORS.magenta;
-            return COLORS.purple;
-        }
+        var buildingMat = new THREE.MeshStandardMaterial({
+            color: 0x050510,
+            metalness: 0.6,
+            roughness: 0.4,
+            transparent: true,
+            opacity: 0.7,
+        });
 
-        // ---- 辅助：创建单栋摩天大楼 ----
-        function createSkyscraper(h, w, d, colType) {
-            var group = new THREE.Group();
+        for (var i = 0; i < count; i++) {
+            var w = 1.5 + Math.random() * 3;
+            var d = 1.5 + Math.random() * 3;
+            var h = 3 + Math.random() * 17;
 
-            // 1. 主体方盒
-            var mainGeo = new THREE.BoxGeometry(w, h, d);
-            var mainMat = new THREE.MeshStandardMaterial({
-                color: 0x0a0a18,
-                metalness: 0.8,
-                roughness: 0.25,
-                transparent: true,
-                opacity: 0.9,
-            });
-            var mainMesh = new THREE.Mesh(mainGeo, mainMat);
-            group.add(mainMesh);
+            var geo = new THREE.BoxGeometry(w, h, d);
+            var mesh = new THREE.Mesh(geo, buildingMat);
 
-            // 2. 顶部结构（70% 几率）
-            if (Math.random() < 0.7) {
-                var topW = w * (0.3 + Math.random() * 0.3);
-                var topH = 3 + Math.random() * 8;
-                var topGeo = new THREE.BoxGeometry(topW, topH, topW);
-                var topMat = new THREE.MeshStandardMaterial({
-                    color: 0x0a0a18,
-                    metalness: 0.8,
-                    roughness: 0.25,
+            // 分布在桥两侧
+            var side = Math.random() < 0.5 ? -1 : 1;
+            var x = side * (8 + Math.random() * 42);
+            var z = -60 + Math.random() * 100;
+            mesh.position.set(x, h / 2, z);
+            scene.add(mesh);
+
+            // 30% 霓虹边缘
+            if (Math.random() < 0.3) {
+                var edgeColor = COLOR_LIST[Math.floor(Math.random() * COLOR_LIST.length)];
+                var edges = new THREE.EdgesGeometry(geo);
+                var eMat = new THREE.LineBasicMaterial({
+                    color: edgeColor,
                     transparent: true,
-                    opacity: 0.9,
+                    opacity: 0.3 + Math.random() * 0.3,
                 });
-                var topMesh = new THREE.Mesh(topGeo, topMat);
-                topMesh.position.y = h / 2 + topH / 2;
-                group.add(topMesh);
+                var eLine = new THREE.LineSegments(edges, eMat);
+                eLine.position.copy(mesh.position);
+                scene.add(eLine);
             }
 
-            // 3. 发光窗格网格（Points）
-            var floorHeight = 2.5;
-            var windowsPerFloor = Math.floor(w / 1.2);
-            var floors = Math.floor(h / floorHeight);
-            var windowPositions = [];
-
-            // 移动端窗户数减半
-            var winSkip = isMobile ? 2 : 1;
-
-            // 正面窗户（面向桥，z 正方向）
-            for (var fi = 0; fi < floors; fi += winSkip) {
-                for (var wi = 0; wi < windowsPerFloor; wi++) {
-                    if (Math.random() > 0.3) {
-                        var wx = -w / 2 + 0.6 + wi * 1.2 + Math.random() * 0.2;
-                        var wy = -h / 2 + 1.5 + fi * floorHeight + Math.random() * 0.3;
-                        var wz = d / 2 + 0.05;
-                        windowPositions.push(wx, wy, wz);
-                    }
-                }
-            }
-
-            // 侧面窗户（x 正方向面）
-            var sideWindowsPerFloor = Math.floor(d / 1.2);
-            for (var fi2 = 0; fi2 < floors; fi2 += winSkip) {
-                for (var swi = 0; swi < sideWindowsPerFloor; swi++) {
-                    if (Math.random() > 0.3) {
-                        var swx = w / 2 + 0.05;
-                        var swy = -h / 2 + 1.5 + fi2 * floorHeight + Math.random() * 0.3;
-                        var swz = -d / 2 + 0.6 + swi * 1.2 + Math.random() * 0.2;
-                        windowPositions.push(swx, swy, swz);
-                    }
-                }
-            }
-
-            if (windowPositions.length > 0) {
-                var winGeo = new THREE.BufferGeometry();
-                winGeo.setAttribute('position', new THREE.Float32BufferAttribute(windowPositions, 3));
-                var winMat = new THREE.PointsMaterial({
-                    color: pickWindowColor(),
-                    size: 0.4,
-                    transparent: true,
-                    opacity: 0.7,
-                    blending: THREE.AdditiveBlending,
-                    depthWrite: false,
-                });
-                var winPoints = new THREE.Points(winGeo, winMat);
-                group.add(winPoints);
-            }
-
-            // 以下装饰在移动端全部跳过
-            if (!isMobile) {
-
-                // 4. 霓虹广告屏（40% 几率，远列跳过）
-                if (colType !== 'far' && Math.random() < 0.4) {
-                    var screenCount = 1 + Math.floor(Math.random() * 2);
-                    for (var si = 0; si < screenCount; si++) {
-                        var screenW = 2 + Math.random() * 3;
-                        var screenH = 3 + Math.random() * 5;
-                        var screenGeo = new THREE.PlaneGeometry(screenW, screenH);
-                        var screenColor = COLOR_LIST[Math.floor(Math.random() * 3)];
-                        var screenMat = new THREE.MeshBasicMaterial({
-                            color: screenColor,
-                            transparent: true,
-                            opacity: 0.25 + Math.random() * 0.2,
-                            blending: THREE.AdditiveBlending,
-                            depthWrite: false,
-                            side: THREE.DoubleSide,
-                        });
-                        var screenMesh = new THREE.Mesh(screenGeo, screenMat);
-                        screenMesh.position.set(
-                            (Math.random() - 0.5) * (w - screenW) * 0.6,
-                            -h / 2 + h * (0.3 + Math.random() * 0.4),
-                            d / 2 + 0.1
-                        );
-                        group.add(screenMesh);
-
-                        // 屏幕边框
-                        var screenEdge = new THREE.EdgesGeometry(screenGeo);
-                        var screenEdgeMat = new THREE.LineBasicMaterial({
-                            color: screenColor,
-                            transparent: true,
-                            opacity: 0.8,
-                        });
-                        var screenLine = new THREE.LineSegments(screenEdge, screenEdgeMat);
-                        screenLine.position.copy(screenMesh.position);
-                        group.add(screenLine);
-                    }
-                }
-
-                // 5. 垂直霓虹灯条（60% 几率）
-                if (Math.random() < 0.6) {
-                    var stripCount = 1 + Math.floor(Math.random() * 3);
-                    for (var sti = 0; sti < stripCount; sti++) {
-                        var stripColor = COLOR_LIST[Math.floor(Math.random() * 3)];
-                        var stripGeo = new THREE.BoxGeometry(0.08, h * 0.8, 0.08);
-                        var stripMat = new THREE.MeshBasicMaterial({
-                            color: stripColor,
-                            transparent: true,
-                            opacity: 0.7,
-                            blending: THREE.AdditiveBlending,
-                            depthWrite: false,
-                        });
-                        var strip = new THREE.Mesh(stripGeo, stripMat);
-                        strip.position.set(
-                            -w / 2 + Math.random() * w,
-                            0,
-                            d / 2 + 0.05
-                        );
-                        group.add(strip);
-                    }
-                }
-
-                // 6. 水平结构带/管道（50% 几率，远列和低性能跳过）
-                if (colType !== 'far' && !isLowPerf && Math.random() < 0.5) {
-                    var pipeCount = 2 + Math.floor(Math.random() * 3);
-                    for (var pi = 0; pi < pipeCount; pi++) {
-                        var pipeY = -h / 2 + h * (0.2 + Math.random() * 0.6);
-                        var pipeGeo = new THREE.BoxGeometry(w + 0.5, 0.15, 0.15);
-                        var pipeMat = new THREE.MeshStandardMaterial({
-                            color: 0x222235,
-                            metalness: 0.9,
-                            roughness: 0.2,
-                        });
-                        var pipe = new THREE.Mesh(pipeGeo, pipeMat);
-                        pipe.position.set(0, pipeY, d / 2 + 0.1);
-                        group.add(pipe);
-                    }
-                }
-
-            } // end !isMobile
-
-            // 7. 建筑边缘线（50%）
-            if (Math.random() < 0.5) {
-                var edges = new THREE.EdgesGeometry(mainGeo);
-                var edgeMat = new THREE.LineBasicMaterial({
-                    color: COLOR_LIST[Math.floor(Math.random() * 3)],
-                    transparent: true,
-                    opacity: 0.2 + Math.random() * 0.3,
-                });
-                var edgeLine = new THREE.LineSegments(edges, edgeMat);
-                group.add(edgeLine);
-            }
-
-            return group;
-        }
-
-        // ---- 主循环：按列对称生成 ----
-        for (var ci = 0; ci < columns.length; ci++) {
-            var col = columns[ci];
-            var maxCount = isMobile ? col.maxMobile : (isLowPerf ? col.maxLow : col.maxDesktop);
-            if (maxCount === 0) continue;
-
-            var z = -65;
-            var placed = 0;
-            while (z <= 35 && placed < maxCount) {
-                var h = col.hMin + Math.random() * (col.hMax - col.hMin);
-                var w = col.wMin + Math.random() * (col.wMax - col.wMin);
-                var d = 3 + Math.random() * 3;
-                var xOffset = (Math.random() - 0.5) * 3;
-                var zOffset = (Math.random() - 0.5) * 3;
-                var xPos = col.xBase + xOffset;
-                var zPos = z + zOffset;
-
-                for (var side = -1; side <= 1; side += 2) {
-                    var finalX = side * xPos;
-                    var building = createSkyscraper(h, w, d, col.type);
-                    building.position.set(finalX, h / 2, zPos);
-                    scene.add(building);
-                }
-
-                z += col.zStep;
-                placed++;
+            // 10% 楼顶灯
+            if (Math.random() < 0.1) {
+                var lc = COLOR_LIST[Math.floor(Math.random() * COLOR_LIST.length)];
+                var topLight = new THREE.PointLight(lc, 0.4, 10);
+                topLight.position.set(x, h + 0.5, z);
+                scene.add(topLight);
             }
         }
     }
